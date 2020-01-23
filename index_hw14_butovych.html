@@ -1,0 +1,130 @@
+<html>
+
+<head>
+    <title>JAVASCRIPT hw14</title>
+</head>
+
+<body>
+    <script>
+        // ЗАДАНИЯ ДЛЯ РАЗМИНКИ!!!!!!)))
+
+        //1) Создать класс Building принимающий  параметр manufacturer,  и 2-х его наследников Restaurant, Hotel где эти 2 класса принимают еще один парамет Number of staff. 
+        // нужно подсчитать среднее арифметическое всех сотрудников
+        class Building {
+            constructor(manufacturer, numberOfStaff) {
+                this.manufacturer = manufacturer;
+                this.numberOfStaff = numberOfStaff;
+            }
+            static getAverage(staff) {
+                return staff.reduce((acc, curr) => acc + curr.numberOfStaff, 0)/staff.length
+            }
+        }
+        class Restaurant extends Building {
+            constructor(manufacturer, numberOfStaff) {
+                super(manufacturer, numberOfStaff);
+            }
+        }
+        class Hotel extends Building {
+            constructor(manufacturer, numberOfStaff) {
+                super(manufacturer, numberOfStaff);
+            }
+        }
+        const building = new Building('Luxury', 315);
+        const restaurant = new Restaurant('LuxuryRestaurant', 355);
+        const hotel = new Hotel('LuxuryHotel', 329);
+        Building.getAverage([building, restaurant, hotel]); // 333
+        //________________________________________________
+
+        //2) Создать класс Builder со свойствами name, salary, workingHoursPerDay,и реализовать 2 класса со статическими 
+        // функциями, первый класс имеет функцию которая сортирует по salary и принимает массив из строителей, а второй находит сотрудника у которого самое большое workingHoursPerDay
+        class Builder {
+            constructor(name, salary, workingHoursPerDay) {
+                this.name = name;
+                this.salary = salary;
+                this.workingHoursPerDay = workingHoursPerDay;
+            }
+        }
+        class Salary extends Builder {
+            constructor(name, salary, workingHoursPerDay) {
+                super(name, salary, workingHoursPerDay);
+            }
+            static getSort(salary) {
+                return salary.sort((a, b) => a.salary > b.salary ? 1 : -1 );
+            }
+        }
+        class BestEmployee extends Builder {
+            constructor(name, salary, workingHoursPerDay) {
+                super(name, salary, workingHoursPerDay);
+            }
+            static getWorker(name) {
+                return name.reduce((biggest, curr) => biggest.workingHoursPerDay > curr ? biggest.workingHoursPerDay : curr, 0);
+            }
+        }
+        const employee1 = new Builder('Alex', 10100, 8);
+        const employee2 = new Builder('Jane', 10000, 12);
+        const employee3 = new Builder('John', 10500, 10);
+        Salary.getSort([employee1, employee2, employee3]);
+        BestEmployee.getWorker([employee1, employee2, employee3]);
+        //_______________________________________________________
+
+        //3) Есть класс App! Который принимает массив с обьектов со свойствами name, country и нужно вернуть обьект с ключами которые являются значениями свойства country где будет массивы с name!
+        // как на уроке одним словом то есть так
+        // const res = {
+        //     'Ukraine': ['VAsia', 'Petia', 'Boria'],
+        //     'USA': ['John', 'Ben']
+        // }
+        // const users = [
+        //     { name: 'VAsia', country: 'Ukraine'},
+        //     { name: 'Petia', country: 'Ukraine'},
+        //     { name: 'Boria', country: 'Ukraine'},
+        //     { name: 'John', country: 'USA'},
+        //     { name: 'Ben', country: 'USA'},
+        // ]
+        class App {
+            constructor(name, country) {
+                this.name = name;
+                this.country = country;
+            };
+            static getUsersByСountries(users) {
+                let res = {};
+                users.forEach(element => {
+                    if(!res[element.country]) {
+                        res[element.country] = [];
+                    }
+                    res[element.country].push(element);
+                });
+                return res;
+            }
+        }
+        const user1 = new App('VAsia', 'Ukraine');
+        const user2 = new App('Petia', 'Ukraine');
+        const user3 = new App('Boria', 'Ukraine');
+        const user4 = new App('John', 'USA');
+        const user5 = new App('Ben', 'USA');
+        App.getUsersByСountries([user1, user2, user3, user4, user5]);
+        //__________________________________________________________
+
+        class App {
+            constructor(name, country) {
+                this.name = name;
+                this.country = country;
+            };
+            static getUsersByСountries(users) {
+                return users.reduce((accum, curr) => {
+                    if (!accum[curr.country]) accum[curr.country] = [];
+                    accum[curr.country].push(curr);
+                    return accum;
+                }, {} )
+            }
+        }
+        const user1 = new App('VAsia', 'Ukraine');
+        const user2 = new App('Petia', 'Ukraine');
+        const user3 = new App('Boria', 'Ukraine');
+        const user4 = new App('John', 'USA');
+        const user5 = new App('Ben', 'USA');
+        App.getUsersByСountries([user1, user2, user3, user4, user5]);
+        //__________________________________________________________
+
+    </script>
+</body>
+</html>
